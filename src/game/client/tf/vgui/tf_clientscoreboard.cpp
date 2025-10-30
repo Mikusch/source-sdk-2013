@@ -258,6 +258,12 @@ void CTFClientScoreBoardDialog::UpdatePlayerModel()
 	int nTeam = pPlayer->GetTeamNumber();
 	int nItemSlot = ( pPlayer->IsAlive() && pPlayer->GetActiveTFWeapon() ) ? pPlayer->GetActiveTFWeapon()->GetAttributeContainer()->GetItem()->GetStaticData()->GetLoadoutSlot( nClass ) : LOADOUT_POSITION_PRIMARY;
 	CEconItemView *pWeapon = NULL;
+	const char *pszModelOverride = NULL;
+
+	if ( pPlayer->GetPlayerClass()->HasCustomModel() )
+	{
+		pszModelOverride = pPlayer->GetPlayerClass()->GetModelName();
+	}
 
 	CTFWeaponBase *pEnt = dynamic_cast<CTFWeaponBase*>( pPlayer->GetEntityForLoadoutSlot( nItemSlot ) );
 	if ( pEnt )
@@ -266,7 +272,7 @@ void CTFClientScoreBoardDialog::UpdatePlayerModel()
 	}
 
 	m_pPlayerModelPanel->ClearCarriedItems();
-	m_pPlayerModelPanel->SetToPlayerClass( nClass );
+	m_pPlayerModelPanel->SetToPlayerClass( nClass, false, pszModelOverride );
 	m_pPlayerModelPanel->SetTeam( nTeam );
 
 	if ( pWeapon )

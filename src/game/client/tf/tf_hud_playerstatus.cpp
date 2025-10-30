@@ -447,12 +447,19 @@ void CTFHudPlayerClass::UpdateModelPanel()
 		int nTeam;
 		int nItemSlot = m_nLoadoutPosition;
 		CEconItemView *pWeapon = NULL;
+		const char *pszModelOverride = NULL;
 
 		bool bDisguised = pPlayer->m_Shared.InCond( TF_COND_DISGUISED );
 		if ( bDisguised )
 		{
 			nClass = pPlayer->m_Shared.GetDisguiseClass();
 			nTeam = pPlayer->m_Shared.GetDisguiseTeam();
+
+			C_TFPlayer *pDisguiseTarget = ToTFPlayer( pPlayer->m_Shared.GetDisguiseTarget() );
+			if ( pDisguiseTarget && pDisguiseTarget->GetPlayerClass()->HasCustomModel() )
+			{
+				pszModelOverride = pDisguiseTarget->GetPlayerClass()->GetModelName();
+			}
 
 			if ( pPlayer->m_Shared.GetDisguiseWeapon() )
 			{
@@ -469,6 +476,11 @@ void CTFHudPlayerClass::UpdateModelPanel()
 			nClass = pPlayer->GetPlayerClass()->GetClassIndex();
 			nTeam = pPlayer->GetTeamNumber();
 
+			if ( pPlayer->GetPlayerClass()->HasCustomModel() )
+			{
+				pszModelOverride = pPlayer->GetPlayerClass()->GetModelName();
+			}
+
 			CTFWeaponBase *pEnt = dynamic_cast< CTFWeaponBase* >( pPlayer->GetEntityForLoadoutSlot( nItemSlot ) );
 			if ( pEnt )
 			{
@@ -477,7 +489,7 @@ void CTFHudPlayerClass::UpdateModelPanel()
 		}
 
 		m_pPlayerModelPanel->ClearCarriedItems();
-		m_pPlayerModelPanel->SetToPlayerClass( nClass );
+		m_pPlayerModelPanel->SetToPlayerClass( nClass, false, pszModelOverride );
 		m_pPlayerModelPanel->SetTeam( nTeam );
 
 		if ( pWeapon )
