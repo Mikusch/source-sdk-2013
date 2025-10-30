@@ -8895,8 +8895,20 @@ void C_TFPlayer::ValidateModelIndex( void )
 	}
 	else if ( m_Shared.InCond( TF_COND_DISGUISED ) && IsEnemyPlayer() )
 	{
-		TFPlayerClassData_t *pData = GetPlayerClassData( m_Shared.GetDisguiseClass() );
-		m_nModelIndex = modelinfo->GetModelIndex( pData->GetModelName() );
+		const char *pszModelName = NULL;
+
+		C_TFPlayer *pDisguiseTarget = ToTFPlayer( m_Shared.GetDisguiseTarget() );
+		if ( pDisguiseTarget && pDisguiseTarget->GetPlayerClass()->HasCustomModel() )
+		{
+			pszModelName = pDisguiseTarget->GetPlayerClass()->GetModelName();
+		}
+		else
+		{
+			TFPlayerClassData_t *pData = GetPlayerClassData( m_Shared.GetDisguiseClass() );
+			pszModelName = pData->GetModelName();
+		}
+
+		m_nModelIndex = modelinfo->GetModelIndex( pszModelName );
 	}
 	else if ( m_Shared.InCond( TF_COND_HALLOWEEN_GHOST_MODE ) )
 	{
