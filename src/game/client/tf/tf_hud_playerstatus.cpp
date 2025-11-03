@@ -234,9 +234,20 @@ void CTFHudPlayerClass::OnThink()
 	}
 
 
+	bool bCustomModelChanged = pPlayer->GetPlayerClass()->CustomModelHasChanged();
+
+	if ( m_nClass == TF_CLASS_SPY && pPlayer->m_Shared.InCond( TF_COND_DISGUISED ) )
+	{
+		C_TFPlayer *pDisguiseTarget = ToTFPlayer( pPlayer->m_Shared.GetDisguiseTarget() );
+		if ( pDisguiseTarget )
+		{
+			bCustomModelChanged |= pDisguiseTarget->GetPlayerClass()->CustomModelHasChanged();
+		}
+	}
+
 	bool bForceEyeUpdate = false;
 	// set our class image
-	if (	m_nClass != pPlayer->GetPlayerClass()->GetClassIndex() || bTeamChange || bCloakChange || bLoadoutPositionChange || bPlayerClassModeChange ||
+	if (	m_nClass != pPlayer->GetPlayerClass()->GetClassIndex() || bTeamChange || bCloakChange || bLoadoutPositionChange || bPlayerClassModeChange || bCustomModelChanged ||
 			(
 				m_nClass == TF_CLASS_SPY &&
 				(
