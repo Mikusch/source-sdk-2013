@@ -175,7 +175,7 @@ bool CTFPlayerClassShared::Init( int iClass )
 	m_iClass = iClass;
 
 #ifdef CLIENT_DLL
-	V_strncpy( m_iszCustomModel, g_aRawPlayerClassNamesShort[ m_iClass ], sizeof( m_iszCustomModel ) );
+	V_strncpy( m_iszClassIcon, g_aRawPlayerClassNamesShort[ m_iClass ], sizeof( m_iszClassIcon ) );
 #else
 	m_iszClassIcon.Set( AllocPooledString( g_aRawPlayerClassNamesShort[ m_iClass ] ) );
 #endif
