@@ -237,6 +237,7 @@ void CTFHudPlayerClass::OnThink()
 	bool bForceEyeUpdate = false;
 	// set our class image
 	if (	m_nClass != pPlayer->GetPlayerClass()->GetClassIndex() || bTeamChange || bCloakChange || bLoadoutPositionChange || bPlayerClassModeChange ||
+			pPlayer->GetPlayerClass()->CustomModelHasChanged() ||
 			(
 				m_nClass == TF_CLASS_SPY &&
 				(
